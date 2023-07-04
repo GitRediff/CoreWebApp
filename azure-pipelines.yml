@@ -2,7 +2,8 @@ trigger:
 - master
 
 stages:
-- stage: “BuildStage”
+- stage: Build
+  displayName: Build
   jobs:
   - job: 
     pool:
@@ -39,8 +40,9 @@ stages:
         artifact: 'drop'
         publishLocation: 'pipeline'
 
-- stage: "DeployToDev"
-  dependsOn: "BuildStage"
+- stage: Release
+  displayName: Release
+  dependsOn: Build
   jobs:
   - job: 
     pool:
