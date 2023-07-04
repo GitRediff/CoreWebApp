@@ -34,11 +34,17 @@ stages:
         publishWebProjects: true
         arguments: '--configuration $(buildConfig)  --output $(Build.ArtifactStagingDirectory)'
 
-    - task: PublishPipelineArtifact@1
+    - task: PublishBuildArtifacts@1
       inputs:
-        targetPath: '$(Build.ArtifactStagingDirectory)'
-        artifact: 'drop'
-        publishLocation: 'pipeline'
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+    
+    # - task: PublishPipelineArtifact@1
+    #   inputs:
+    #     targetPath: '$(Build.ArtifactStagingDirectory)'
+    #     artifact: 'drop'
+    #     publishLocation: 'pipeline'
 
 - stage: Release
   displayName: Release
@@ -57,5 +63,6 @@ stages:
         azureSubscription: 'Pay-As-You-Go(174740a9-79b5-4c67-87dc-5c83aa1d1c90)'
         appType: 'webAppLinux'
         WebAppName: 'PraBhoWebAppCiCdDev'
-        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+        packageForLinux: '$(Build.ArtifactStagingDirectory)/*.zip'
+        # packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
         RuntimeStack: 'DOTNETCORE|6.0'
