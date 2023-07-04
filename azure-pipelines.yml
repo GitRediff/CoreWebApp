@@ -63,6 +63,6 @@ stages:
         azureSubscription: 'Pay-As-You-Go(174740a9-79b5-4c67-87dc-5c83aa1d1c90)'
         appType: 'webAppLinux'
         WebAppName: 'PraBhoWebAppCiCdDev'
-        packageForLinux: '$(Build.ArtifactStagingDirectory)/*.zip'
-        # packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+        # packageForLinux: '$(Build.ArtifactStagingDirectory)/*.zip'
+        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
         RuntimeStack: 'DOTNETCORE|6.0'
