@@ -2,10 +2,10 @@ trigger:
 - master
 
 stages:
-- stage: Build
+- stage: "BuildStage"
   displayName: Build
   jobs:
-  - job: 
+  - job: "BuildJob"
     pool:
       vmImage: ubuntu-latest
 
@@ -40,9 +40,8 @@ stages:
         artifact: 'drop'
         publishLocation: 'pipeline'
 
-- stage: Release
-  displayName: Release
-  dependsOn: Build
+- stage: "DeployToDev"
+  dependsOn: "BuildStage"
   jobs:
   - job: 
     pool:
@@ -50,7 +49,6 @@ stages:
     steps:
     - download: current
       artifact: drop
-
     - task: AzureRmWebAppDeployment@4
       inputs:
         ConnectionType: 'AzureRM'
@@ -60,3 +58,21 @@ stages:
         packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
         # packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
         RuntimeStack: 'DOTNETCORE|6.0'
+- stage: "DeployToQa"
+  dependsOn: "DeployToDev"
+  jobs:
+  - job: 
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - download: current
+      artifact: drop
+    - task: AzureRmWebAppDeployment@4
+      inputs:
+        ConnectionType: 'AzureRM'
+        azureSubscription: 'Pay-As-You-Go(174740a9-79b5-4c67-87dc-5c83aa1d1c90)'
+        appType: 'webAppLinux'
+        WebAppName: 'PraBhoWebAppCiCdQA'
+        packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+        RuntimeStack: 'DOTNETCORE|6.0'
+    
