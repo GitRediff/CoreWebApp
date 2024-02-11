@@ -1,0 +1,6 @@
+I used this application for direct deployment using 
+	1. direct publish from project to Azure Web App	using Contiunus deployment option 
+	2. Used in CiCd with help of Azure Devops
+	
+	3. 11 Feb 2024 
+		-> Trying ARM Templates
